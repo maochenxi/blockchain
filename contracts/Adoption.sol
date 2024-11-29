@@ -214,9 +214,13 @@ contract Adoption is ERC721 {
         require(msg.value >= 0.1 ether, "Not enough Ether provided."); // Check if the transaction value is enough.
         require(pets[petId].forSale, "Pet not for sale"); // Ensure the pet is for sale.
 
-        pets[petId].owner.transfer(msg.value); // Transfer the Ether to the current pet owner.
+        pets[petId].owner.transfer(pets[petId].value); // Transfer the Ether to the current pet owner.
         pets[petId].forSale = false;
         pets[petId].owner = payable(msg.sender);
+
+        _mint(msg.sender, petId); // 铸造 NFT
+
+        ownerTokens[msg.sender].push(petId); // 将新铸造的代币 ID 添加到所有者的数组中
 
         emit PetAdopted(petId, msg.sender);
     }
@@ -232,6 +236,7 @@ contract Adoption is ERC721 {
         return false; // 未找到代币，返回 false
     }
 
+    //出售数字藏品
     function sellPet_new(uint petId) public {
         // require(petId < pets.length, "Pet does not exist");
         require(pets[petId].owner == msg.sender, "Not the owner");
@@ -240,7 +245,8 @@ contract Adoption is ERC721 {
         _burn(petId); // 销毁代币
         // 更新宠物映射
         pets[petId].forSale = true;
-        pets[petId].owner = payable(address(0));
+        //保持原有owner来接受购买数字藏品的以太币
+        //pets[petId].owner = payable(address(0));
 
         // 从所有者的代币列表中移除该代币
         uint256[] storage tokens = ownerTokens[msg.sender];
@@ -255,12 +261,12 @@ contract Adoption is ERC721 {
         emit PetSold(petId, msg.sender);
     }
 
-    function sellPet(uint petId) public {
-        // require(petId < pets.length, "Pet does not exist");
-        require(pets[petId].owner == msg.sender, "Not the owner");
-        pets[petId].forSale = true;
-        emit PetSold(petId, msg.sender);
-    }
+    // function sellPet(uint petId) public {
+    //     // require(petId < pets.length, "Pet does not exist");
+    //     require(pets[petId].owner == msg.sender, "Not the owner");
+    //     pets[petId].forSale = true;
+    //     emit PetSold(petId, msg.sender);
+    // }
 
     function addPet(
         string memory name,
