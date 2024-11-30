@@ -24,171 +24,94 @@ contract Adoption is ERC721 {
     mapping(address => uint256[]) public ownerTokens;
 
     // 记录宠物数量
-    uint256 public petCount=15;
+    uint256 public petCount=8;
 
     constructor() ERC721("PetNFT", "PET") {
 
         pets[1] = Pet(
-                "Gina",
-                "images/scottish-terrier.jpeg",
+                "Statue of the Six Elders", // "六尊者像"
+                "images/1.jpg",
                 3,
                 0,
                 0,
-                "Lisco, Alabama",
+                "The 'Statue of the Six Elders' is a painting by the Tang Dynasty artist Lu Lengjia, currently housed in the Palace Museum in Beijing, carrying profound religious cultural connotations.",
                 payable(address(0)),
                 false
             );
 
         pets[2] = Pet(
-                "Collins",
-                "images/french-bulldog.jpeg",
-                2,
+                "Gold Medal of the Primordial Heavenly Sovereign",
+                "images/2.jpg",
+                4,
                 0,
                 0,
-                "Lisco, Alabama",
+                "The Primordial Heavenly Sovereign of the Jade Purity, the head of the Three Pure Ones in Taoism, symbolizes the chaos and infinity of the universe's creation.",
                 payable(address(0)),
                 false
             );
 
         pets[3] = Pet(
-                "Melissa",
-                "images/boxer.jpeg",
+                "Boshang Reading Sticker",
+                "images/5.jpg",
                 2,
                 0,
                 0,
-                "Lisco, Alabama",
+                "The 'Boshang Reading Sticker' is a work on paper by the famous Tang Dynasty calligrapher Ouyang Xun, known for its exquisite calligraphy skills and profound cultural heritage.",
                 payable(address(0)),
                 false
             );
 
         pets[4] = Pet(
-                "Jeanine",
-                "images/french-bulldog.jpeg",
-                2,
+                "National Style Fortune Cat",
+                "images/3.jpg",
+                3,
                 0,
                 0,
-                "Lisco, Alabama",
+                "The National Style Fortune Cat is presented in a blue and red glaze, with delicate porcelain quality and a clean and elegant color. It is worthy of being a masterpiece of Chinese porcelain.",
                 payable(address(0)),
                 false
             );
 
         pets[5] = Pet(
-                "Elvia",
-                "images/french-bulldog.jpeg",
-                3,
+                "Jade Ornament of Human Head and Serpent Body",
+                "images/4.jpg",
+                5,
                 0,
                 0,
-                "Lisco, Alabama",
+                "The jade ornament of human head and serpent body was unearthed from the tomb of Huang Junmeng in the early Spring and Autumn period, providing valuable physical data for studying the clothing and jade carving craftsmanship of the Zhou Dynasty.",
                 payable(address(0)),
                 false
             );
 
         pets[6] = Pet(
-                "Latisha",
-                "images/golden-retriever.jpeg",
-                3,
+                "Spring Colors of Luoyang",
+                "images/6.jpg",
+                5,
                 0,
                 0,
-                "Lisco, Alabama",
+                "Currently housed in the Palace Museum in Beijing, it depicts the vivid natural ecological beauty of peonies. This painting broke free from the constraints of ink outline, directly blending colors and water to dot the flowers and leaves.",
                 payable(address(0)),
                 false
             );
 
         pets[7] = Pet(
-                "Coleman",
-                "images/golden-retriever.jpeg",
+                "Meiping with Four Loves in Blue and White",
+                "images/7.jpg",
                 3,
                 0,
                 0,
-                "Lisco, Alabama",
+                "Currently housed in the Hubei Provincial Museum, a national first-class cultural relic. It's a rare and precious example of Yuan Dynasty blue-and-white porcelain, primarily featuring human figures as the main subject.",
                 payable(address(0)),
                 false
             );
 
         pets[8] = Pet(
-                "Nichole",
-                "images/french-bulldog.jpeg",
-                2,
-                0,
-                0,
-                "Lisco, Alabama",
-                payable(address(0)),
-                false
-            );
-
-        pets[9] = Pet(
-                "Fran",
-                "images/boxer.jpeg",
+                "Tea Tasting at Cui'an",
+                "images/8.jpg",
                 3,
                 0,
                 0,
-                "Lisco, Alabama",
-                payable(address(0)),
-                false
-            );
-
-        pets[10] = Pet(
-                "Leonor",
-                "images/boxer.jpeg",
-                2,
-                0,
-                0,
-                "Lisco, Alabama",
-                payable(address(0)),
-                false
-            );
-
-        pets[11] = Pet(
-                "Dean",
-                "images/scottish-terrier.jpeg",
-                3,
-                0,
-                0,
-                "Lisco, Alabama",
-                payable(address(0)),
-                false
-            );
-
-        pets[12] = Pet(
-                "Stevenson",
-                "images/french-bulldog.jpeg",
-                3,
-                0,
-                0,
-                "Lisco, Alabama",
-                payable(address(0)),
-                false
-            );
-
-        pets[13] = Pet(
-                "Kristina",
-                "images/golden-retriever.jpeg",
-                4,
-                0,
-                0,
-                "Lisco, Alabama",
-                payable(address(0)),
-                false
-            );
-
-        pets[14] = Pet(
-                "Ethel",
-                "images/golden-retriever.jpeg",
-                2,
-                0,
-                0,
-                "Lisco, Alabama",
-                payable(address(0)),
-                false
-            );
-
-        pets[15] = Pet(
-                "Terry",
-                "images/golden-retriever.jpeg",
-                2,
-                0,
-                0,
-                "Lisco, Alabama",
+                "Miaoyu hosted with high etiquette to receive Jia Mu and her party. Miaoyu prepared different types of tea according to the identities and preferences of different individuals, showcasing the intricacies of the ancient tea ceremony.",
                 payable(address(0)),
                 false
             );
