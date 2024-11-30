@@ -11,9 +11,17 @@ App = {
       for (i = 0; i < data.length; i++) {
         petTemplate.find('.panel-title').text(data[i].name);
         petTemplate.find('img').attr('src', data[i].picture);
-        petTemplate.find('.pet-breed').text(data[i].breed);
+        // console.log("time",data[i].timestamp);
+        // var date = new Date(data[i].timestamp * 1000); // 假设时间戳是以秒为单位
+        // var formattedDate = date.getFullYear() + '.' + 
+        //                     String(date.getMonth() + 1).padStart(2, '0') + '.' + 
+        //                     String(date.getDate()).padStart(2, '0');
+        // console.log("time2",formattedDate);
+        // petTemplate.find('.pet-timestamp').text(String(formattedDate));
+        petTemplate.find('.pet-timestamp').text(data[i].timestamp);
         petTemplate.find('.pet-value').text(data[i].value);
-        petTemplate.find('.pet-location').text(data[i].location);
+        petTemplate.find('.pet-NFTCode').text(data[i].NFTCode);
+        petTemplate.find('.pet-description').text(data[i].description);
         petTemplate.find('.btn-adopt').attr('data-id', data[i].id);
         petTemplate.find('.btn-adopt').attr('data-value', data[i].value);
         petTemplate.find('.btn-sell').attr('data-id', data[i].id);
@@ -160,21 +168,35 @@ App = {
       adoptionInstance = instance;
       return adoptionInstance.getCount.call();
     }).then(async function (count) {
-      for (var i = 0; i < count.c[0]; i++) {
+      for (var i = 1; i <= count.c[0]; i++) {
         await adoptionInstance.getAllPets.call(i).then(function (pet) {
-          const [name, location, value, sale, owner, image, breed] = [pet[0], pet[1], pet[2], pet[3], pet[4], pet[5], pet[6]];
+          const [name, description, value, sale, image, NFTCode, timestamp] = [pet[0], pet[1], pet[2], pet[3], pet[4], pet[5], pet[6], pet[7]];
           var petTemplate = $('#petTemplate');
           petTemplate.find('.panel-title').text(name);
           petTemplate.find('img').attr('src', image);
-          petTemplate.find('.pet-breed').text(breed);
+          petTemplate.find('.pet-description').text(description);
           petTemplate.find('.pet-value').text(value.c[0]);
-          petTemplate.find('.pet-location').text(location);
+          petTemplate.find('.pet-NFTCode').text(NFTCode);
+          // petTemplate.find('.pet-timestamp').text(timestamp);
+          var date = new Date(timestamp * 1000); // 假设时间戳是以秒为单位
+          var formattedDate = date.getFullYear() + '.' + 
+                            String(date.getMonth() + 1).padStart(2, '0') + '.' + 
+                            String(date.getDate()).padStart(2, '0') + ' ' + 
+                            String(date.getHours()).padStart(2, '0') + ':' + 
+                            String(date.getMinutes()).padStart(2, '0') + ':' + 
+                            String(date.getSeconds()).padStart(2, '0'); // 添加小时、分钟和秒
+          petTemplate.find('.pet-timestamp').text(formattedDate);
+          if (NFTCode == 0 || timestamp == 0) {
+            petTemplate.find('.pet-NFTCode').text("None");
+            petTemplate.find('.pet-Collector').text("None");
+            petTemplate.find('.pet-timestamp').text("None");
+          }
           petTemplate.find('.btn-adopt').attr('data-id', i)
           // console.log("data-id name ", i, name);
           if (sale) {
             petTemplate.find('.btn-adopt').text("Sell").attr("disabled", false);
           }
-          else if (parseInt(owner) != 0) {
+          else if (NFTCode != 0) {
             petTemplate.find('.btn-adopt').text("Adopted").attr("disabled", true);
           }
           else {
@@ -230,7 +252,7 @@ App = {
         // console.log("tokenId",tokenId.c[0]);
         await adoptionInstance.getPetsByOwner_nft(tokenId.c[0]).then(function (pet) {
           // console.log("log owned pets");
-          const [name, location, value, sale, owner, image, breed] = [pet[0], pet[1], pet[2], pet[3], pet[4], pet[5], pet[6]];
+          const [name, description, value, sale, image, NFTCode, timestamp] = [pet[0], pet[1], pet[2], pet[3], pet[4], pet[5], pet[6], pet[7]];
           // console.log(name, location, age, sale, owner, image, breed)
           // if (owner === account && sale === false) {
           if (sale === false) {
@@ -238,9 +260,18 @@ App = {
             var petTemplate = petT.clone();
             petTemplate.find('.panel-title').text(name);
             petTemplate.find('img').attr('src', image);
-            petTemplate.find('.pet-breed').text(breed);
+            petTemplate.find('.pet-description').text(description);
             petTemplate.find('.pet-value').text(value.c[0]);
-            petTemplate.find('.pet-location').text(location);
+            petTemplate.find('.pet-NFTCode').text(NFTCode);
+            petTemplate.find('.pet-Collector').text(account);
+            var date = new Date(timestamp * 1000); // 假设时间戳是以秒为单位
+            var formattedDate = date.getFullYear() + '.' + 
+                            String(date.getMonth() + 1).padStart(2, '0') + '.' + 
+                            String(date.getDate()).padStart(2, '0') + ' ' + 
+                            String(date.getHours()).padStart(2, '0') + ':' + 
+                            String(date.getMinutes()).padStart(2, '0') + ':' + 
+                            String(date.getSeconds()).padStart(2, '0'); // 添加小时、分钟和秒
+            petTemplate.find('.pet-timestamp').text(formattedDate);
             petTemplate.find('.btn-adopt').hide();
             petTemplate.find('.btn-sell').attr('data-id', tokenId.c[0]).text("Sell").attr("disabled", false).show();
             console.log("tokenId",tokenId.c[0]);
@@ -288,17 +319,17 @@ App = {
     });
   },
   handleAdd: async function () {
-    var petName = prompt("Enter pet's (name,location,value,breed):");
+    var petName = prompt("Enter pet's (name,value,description):");
     var a = petName.split(';');
     var currentAccount = await window.ethereum.request({ method: 'eth_requestAccounts' });
     var account = currentAccount[0];
-    if (a.length != 4) {
+    if (a.length != 3) {
       alert("Please enter all the details");
       return;
     }
     if (petName) {
       App.contracts.Adoption.deployed().then(async function (instance) {
-        return await instance.addPet(a[0], a[1], parseInt(a[2]), a[3], { from: account });
+        return await instance.addPet(a[0], parseInt(a[1]), a[2], { from: account });
       }).then(function (result) {
         App.displayOwnedPets();
       }).catch(function (err) {

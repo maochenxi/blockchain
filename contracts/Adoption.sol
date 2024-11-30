@@ -9,8 +9,9 @@ contract Adoption is ERC721 {
         string name;
         string picture;
         uint value;
-        string breed;
-        string location;
+        uint timestamp;
+        uint NFTCode;
+        string description;
         address payable owner;
         bool forSale;
     }
@@ -23,25 +24,17 @@ contract Adoption is ERC721 {
     mapping(address => uint256[]) public ownerTokens;
 
     // 记录宠物数量
-    uint256 public petCount=16;
+    uint256 public petCount=15;
 
     constructor() ERC721("PetNFT", "PET") {
-        pets[0] = Pet(
-                "Frieda",
-                "images/scottish-terrier.jpeg",
-                3,
-                "Scottish Terrier",
-                "Lisco, Alabama",
-                payable(address(0)),
-                false
-            );
 
         pets[1] = Pet(
                 "Gina",
                 "images/scottish-terrier.jpeg",
                 3,
-                "Scottish Terrier",
-                "Tooleville, West Virginia",
+                0,
+                0,
+                "Lisco, Alabama",
                 payable(address(0)),
                 false
             );
@@ -50,8 +43,9 @@ contract Adoption is ERC721 {
                 "Collins",
                 "images/french-bulldog.jpeg",
                 2,
-                "French Bulldog",
-                "Freeburn, Idaho",
+                0,
+                0,
+                "Lisco, Alabama",
                 payable(address(0)),
                 false
             );
@@ -60,8 +54,9 @@ contract Adoption is ERC721 {
                 "Melissa",
                 "images/boxer.jpeg",
                 2,
-                "Boxer",
-                "Camas, Pennsylvania",
+                0,
+                0,
+                "Lisco, Alabama",
                 payable(address(0)),
                 false
             );
@@ -70,8 +65,9 @@ contract Adoption is ERC721 {
                 "Jeanine",
                 "images/french-bulldog.jpeg",
                 2,
-                "French Bulldog",
-                "Gerber, South Dakota",
+                0,
+                0,
+                "Lisco, Alabama",
                 payable(address(0)),
                 false
             );
@@ -80,8 +76,9 @@ contract Adoption is ERC721 {
                 "Elvia",
                 "images/french-bulldog.jpeg",
                 3,
-                "French Bulldog",
-                "Innsbrook, Illinois",
+                0,
+                0,
+                "Lisco, Alabama",
                 payable(address(0)),
                 false
             );
@@ -90,8 +87,9 @@ contract Adoption is ERC721 {
                 "Latisha",
                 "images/golden-retriever.jpeg",
                 3,
-                "Golden Retriever",
-                "Soudan, Louisiana",
+                0,
+                0,
+                "Lisco, Alabama",
                 payable(address(0)),
                 false
             );
@@ -100,8 +98,9 @@ contract Adoption is ERC721 {
                 "Coleman",
                 "images/golden-retriever.jpeg",
                 3,
-                "Golden Retriever",
-                "Jacksonwald, Palau",
+                0,
+                0,
+                "Lisco, Alabama",
                 payable(address(0)),
                 false
             );
@@ -110,8 +109,9 @@ contract Adoption is ERC721 {
                 "Nichole",
                 "images/french-bulldog.jpeg",
                 2,
-                "French Bulldog",
-                "Honolulu, Hawaii",
+                0,
+                0,
+                "Lisco, Alabama",
                 payable(address(0)),
                 false
             );
@@ -120,8 +120,9 @@ contract Adoption is ERC721 {
                 "Fran",
                 "images/boxer.jpeg",
                 3,
-                "Boxer",
-                "Matheny, Utah",
+                0,
+                0,
+                "Lisco, Alabama",
                 payable(address(0)),
                 false
             );
@@ -130,8 +131,9 @@ contract Adoption is ERC721 {
                 "Leonor",
                 "images/boxer.jpeg",
                 2,
-                "Boxer",
-                "Tyhee, Indiana",
+                0,
+                0,
+                "Lisco, Alabama",
                 payable(address(0)),
                 false
             );
@@ -140,8 +142,9 @@ contract Adoption is ERC721 {
                 "Dean",
                 "images/scottish-terrier.jpeg",
                 3,
-                "Scottish Terrier",
-                "Windsor, Montana",
+                0,
+                0,
+                "Lisco, Alabama",
                 payable(address(0)),
                 false
             );
@@ -150,8 +153,9 @@ contract Adoption is ERC721 {
                 "Stevenson",
                 "images/french-bulldog.jpeg",
                 3,
-                "French Bulldog",
-                "Kingstowne, Nevada",
+                0,
+                0,
+                "Lisco, Alabama",
                 payable(address(0)),
                 false
             );
@@ -160,8 +164,9 @@ contract Adoption is ERC721 {
                 "Kristina",
                 "images/golden-retriever.jpeg",
                 4,
-                "Golden Retriever",
-                "Sultana, Massachusetts",
+                0,
+                0,
+                "Lisco, Alabama",
                 payable(address(0)),
                 false
             );
@@ -170,8 +175,9 @@ contract Adoption is ERC721 {
                 "Ethel",
                 "images/golden-retriever.jpeg",
                 2,
-                "Golden Retriever",
-                "Broadlands, Oregon",
+                0,
+                0,
+                "Lisco, Alabama",
                 payable(address(0)),
                 false
             );
@@ -180,8 +186,9 @@ contract Adoption is ERC721 {
                 "Terry",
                 "images/golden-retriever.jpeg",
                 2,
-                "Golden Retriever",
-                "Dawn, Wisconsin",
+                0,
+                0,
+                "Lisco, Alabama",
                 payable(address(0)),
                 false
             );
@@ -199,6 +206,8 @@ contract Adoption is ERC721 {
 
         pets[petId].owner.transfer(pets[petId].value); 
         pets[petId].owner = payable(msg.sender);
+        pets[petId].NFTCode = petId;
+        pets[petId].timestamp = block.timestamp;
 
         _mint(msg.sender, petId); // 铸造 NFT
 
@@ -217,6 +226,8 @@ contract Adoption is ERC721 {
         pets[petId].owner.transfer(pets[petId].value); // Transfer the Ether to the current pet owner.
         pets[petId].forSale = false;
         pets[petId].owner = payable(msg.sender);
+        pets[petId].NFTCode = petId;
+        pets[petId].timestamp = block.timestamp;
 
         _mint(msg.sender, petId); // 铸造 NFT
 
@@ -245,6 +256,8 @@ contract Adoption is ERC721 {
         _burn(petId); // 销毁代币
         // 更新宠物映射
         pets[petId].forSale = true;
+        pets[petId].NFTCode = 0;
+        pets[petId].timestamp = 0;
         //保持原有owner来接受购买数字藏品的以太币
         //pets[petId].owner = payable(address(0));
 
@@ -270,18 +283,18 @@ contract Adoption is ERC721 {
 
     function addPet(
         string memory name,
-        string memory location,
         uint value,
-        string memory breed
+        string memory description
     ) public {
-        uint newPetId = petCount;
         petCount = petCount+1;
+        uint newPetId = petCount;
         pets[newPetId]=Pet({
                 value: value,
                 name: name,
-                location: location,
+                description: description,
                 picture: "images/boxer.jpeg",
-                breed: breed,
+                timestamp: 0,
+                NFTCode: 0,
                 owner: payable(address(0)),
                 forSale: false
             });
@@ -307,20 +320,22 @@ contract Adoption is ERC721 {
             string memory,
             uint,
             bool,
-            address,
+            // address,
             string memory,
-            string memory
+            uint,
+            uint
         )
     {
+        Pet memory pet = pets[petId];
         return (
-            pets[petId].name,
-            pets[petId].location,
-            pets[petId].value,
-            pets[petId].forSale,
-            // pets[petId].owner,
-            ownerOf(petId),
-            pets[petId].picture,
-            pets[petId].breed
+            pet.name,
+            pet.description,
+            pet.value,
+            pet.forSale,
+            // ownerOf(petId),
+            pet.picture,
+            pet.NFTCode,
+            pet.timestamp
         );
     }
 
@@ -334,19 +349,22 @@ contract Adoption is ERC721 {
             string memory,
             uint,
             bool,
-            address,
+            // address,
             string memory,
-            string memory
+            uint,
+            uint
         )
     {
+        Pet memory pet = pets[petId];
         return (
-            pets[petId].name,
-            pets[petId].location,
-            pets[petId].value,
-            pets[petId].forSale,
-            pets[petId].owner,
-            pets[petId].picture,
-            pets[petId].breed
+            pet.name,
+            pet.description,
+            pet.value,
+            pet.forSale,
+            // ownerOf(petId),
+            pet.picture,
+            pet.NFTCode,
+            pet.timestamp
         );
     }
 
