@@ -53,7 +53,7 @@ contract DigitalCollectibleContract is ERC721 {
         nfts[3] = DigitalCollectible(
                 "Boshang Reading Sticker",
                 "images/5.jpg",
-                2,
+                3,
                 0,
                 0,
                 "The 'Boshang Reading Sticker' is a work on paper by the famous Tang Dynasty calligrapher Ouyang Xun, known for its exquisite calligraphy skills and profound cultural heritage.",

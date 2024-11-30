@@ -2,7 +2,7 @@
   {
     "id": 1,
     "name": "Gina",
-    "picture": "images/scottish-terrier.jpeg",
+    "picture": "images/1.jpeg",
     "value": 3,
     "description": "Scottish Terrier",
     "timestamp": 0,
@@ -11,8 +11,8 @@
   {
     "id": 2,
     "name": "Collins",
-    "picture": "images/french-bulldog.jpeg",
-    "value": 2,
+    "picture": "images/2.jpeg",
+    "value": 4,
     "description": "Scottish Terrier",
     "timestamp": 0,
     "NFTCode": 0
@@ -20,7 +20,7 @@
   {
     "id": 3,
     "name": "Melissa",
-    "picture": "images/boxer.jpeg",
+    "picture": "images/3.jpeg",
     "value": 2,
     "description": "Scottish Terrier",
     "timestamp": 0,
@@ -29,8 +29,8 @@
   {
     "id": 4,
     "name": "Jeanine",
-    "picture": "images/french-bulldog.jpeg",
-    "value": 2,
+    "picture": "images/4.jpeg",
+    "value": 3,
     "description": "Scottish Terrier",
     "timestamp": 0,
     "NFTCode": 0
@@ -38,8 +38,8 @@
   {
     "id": 5,
     "name": "Elvia",
-    "picture": "images/french-bulldog.jpeg",
-    "value": 3,
+    "picture": "images/5.jpeg",
+    "value": 5,
     "description": "Scottish Terrier",
     "timestamp": 0,
     "NFTCode": 0
@@ -47,8 +47,8 @@
   {
     "id": 6,
     "name": "Latisha",
-    "picture": "images/golden-retriever.jpeg",
-    "value": 3,
+    "picture": "images/6.jpeg",
+    "value": 5,
     "description": "Scottish Terrier",
     "timestamp": 0,
     "NFTCode": 0
@@ -56,7 +56,7 @@
   {
     "id": 7,
     "name": "Coleman",
-    "picture": "images/golden-retriever.jpeg",
+    "picture": "images/7.jpeg",
     "value": 3,
     "description": "Scottish Terrier",
     "timestamp": 0,
@@ -65,8 +65,8 @@
   {
     "id": 8,
     "name": "Nichole",
-    "picture": "images/french-bulldog.jpeg",
-    "value": 2,
+    "picture": "images/8.jpeg",
+    "value": 3,
     "description": "Scottish Terrier",
     "timestamp": 0,
     "NFTCode": 0

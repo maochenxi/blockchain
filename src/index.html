@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <title>Pete's Pet Shop</title>
+  <title>Digital Collectible Shop</title>
 
   <!-- Bootstrap -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -23,30 +23,30 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-12 col-sm-8 col-sm-push-2">
-        <h1 class="text-center">Pete's Pet Shop</h1>
+        <h1 class="text-center">Digital Collectible Shop</h1>
         <hr />
         <br />
       </div>
     </div>
-    <button id="addPetBtn" class="btn btn-default btn-add">Add Pet</button>
-    <button id="sellPetBtn" class="btn btn-default btn-sell">Sell Pet</button>
+    <button id="addNFTBtn" class="btn btn-default btn-add">Add Digital Collectible</button>
+    <button id="sellNFTBtn" class="btn btn-default btn-sell">Sell Digital Collectible</button><br/><br/> 
     <div id="account" class = "row"></div>
-    <div id="myPetsRow" class="row">
-      <!-- OWNED PETS LOAD HERE -->
+    <div id="myNFTsRow" class="row">
+      <!-- OWNED NFTS LOAD HERE -->
     </div>
-    <h3>mypets</h3>
-    <div id="adoptedPetsRow" class="row">
-      <!-- ADOPTED PETS LOAD HERE -->
+    <h3>My Digital Collectibles</h3>
+    <div id="purchasedNFTsRow" class="row">
+      <!-- PURCHASED NFTS LOAD HERE -->
     </div>
-    <h3>petshop</h3>
-    <div id="petsRow" class="row">
-      <!-- PETS LOAD HERE -->
+    <h3>Digital Collectible Shop</h3>
+    <div id="NFTsRow" class="row">
+      <!-- NFTS LOAD HERE -->
     </div>
   </div>
 
-  <div id="petTemplate" style="display: none;">
+  <div id="NFTTemplate" style="display: none;">
     <div class="col-sm-6 col-md-4 col-lg-3">
-      <div class="panel panel-default panel-pet">
+      <div class="panel panel-default panel-NFT">
         <div class="panel-heading">
           <h3 class="panel-title">Scrappy</h3>
         </div>
@@ -54,12 +54,12 @@
           <img alt="140x140" data-src="holder.js/140x140" class="img-rounded img-center" style="width: 100%;"
             src="https://animalso.com/wp-content/uploads/2017/01/Golden-Retriever_6.jpg" data-holder-rendered="true">
           <br /><br />
-          <strong>藏品描述</strong>: <span class="pet-description">Warren, MI</span><br /><br />
-          <strong>藏品NFT编码</strong>: <span class="pet-NFTCode">Warren, MI</span><br /><br />
-          <strong>价值</strong>: <span class="pet-value">3</span><br /><br />
-          <strong>收藏者</strong>: <span class="pet-Collector" style="word-wrap: break-word;">Warren, MI</span><br /><br />
-          <strong>获得时间</strong>: <span class="pet-timestamp">Golden Retriever</span><br /><br />
-          <button class="btn btn-default btn-adopt" type="button" style="background-color: green; color: white;">Adopt</button>
+          <strong>藏品描述</strong>: <span class="NFT-description">Warren, MI</span><br /><br />
+          <strong>藏品NFT编码</strong>: <span class="NFT-NFTCode">Warren, MI</span><br /><br />
+          <strong>价值</strong>: <span class="NFT-value">3</span><br /><br />
+          <strong>收藏者</strong>: <span class="NFT-Collector" style="word-wrap: break-word;">Warren, MI</span><br /><br />
+          <strong>获得时间</strong>: <span class="NFT-timestamp">Golden Retriever</span><br /><br />
+          <button class="btn btn-default btn-purchase" type="button" style="background-color: green; color: white;">Adopt</button>
           <button class="btn btn-default btn-sell" type="button" style="display: none; background-color: rgb(60, 107, 182); color: white;">Sell</button>
         </div>
       </div>

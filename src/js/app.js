@@ -3,34 +3,26 @@ App = {
   contracts: {},
   picture: "",
   init: async function () {
-    // Load pets.
+    // Load nfts.
     $.getJSON('../collectibles.json', function (data) {
-      var petsRow = $('#petsRow');
-      var petTemplate = $('#petTemplate');
+      var NFTsRow = $('#NFTsRow');
+      var NFTTemplate = $('#NFTTemplate');
 
       for (i = 0; i < data.length; i++) {
-        petTemplate.find('.panel-title').text(data[i].name);
-        petTemplate.find('img').attr('src', data[i].picture);
-        // console.log("time",data[i].timestamp);
-        // var date = new Date(data[i].timestamp * 1000); // 假设时间戳是以秒为单位
-        // var formattedDate = date.getFullYear() + '.' + 
-        //                     String(date.getMonth() + 1).padStart(2, '0') + '.' + 
-        //                     String(date.getDate()).padStart(2, '0');
-        // console.log("time2",formattedDate);
-        // petTemplate.find('.pet-timestamp').text(String(formattedDate));
-        petTemplate.find('.pet-timestamp').text(data[i].timestamp);
-        petTemplate.find('.pet-value').text(data[i].value);
-        petTemplate.find('.pet-NFTCode').text(data[i].NFTCode);
-        petTemplate.find('.pet-description').text(data[i].description);
-        petTemplate.find('.btn-adopt').attr('data-id', data[i].id);
-        petTemplate.find('.btn-adopt').attr('data-value', data[i].value);
-        petTemplate.find('.btn-sell').attr('data-id', data[i].id);
-        petTemplate.find('.btn-sell').attr('data-value', data[i].value);
+        NFTTemplate.find('.panel-title').text(data[i].name);
+        NFTTemplate.find('img').attr('src', data[i].picture);
+        NFTTemplate.find('.NFT-timestamp').text(data[i].timestamp);
+        NFTTemplate.find('.NFT-value').text(data[i].value);
+        NFTTemplate.find('.NFT-NFTCode').text(data[i].NFTCode);
+        NFTTemplate.find('.NFT-description').text(data[i].description);
+        NFTTemplate.find('.btn-purchase').attr('data-id', data[i].id);
+        NFTTemplate.find('.btn-purchase').attr('data-value', data[i].value);
+        NFTTemplate.find('.btn-sell').attr('data-id', data[i].id);
+        NFTTemplate.find('.btn-sell').attr('data-value', data[i].value);
         // console.log("id",data[i].id);
         // console.log("value",data[i].value);
 
-        // console.log("宠物内容:", petTemplate.html());
-        petsRow.append(petTemplate.html());
+        NFTsRow.append(NFTTemplate.html());
       }
     });
 
@@ -41,11 +33,14 @@ App = {
     if (window.ethereum) {
       App.web3Provider = window.ethereum;
       try {
-        // Request account access
+        // 请求账户访问
         await window.ethereum.enable();
+        // 获取账户
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        App.account = accounts[0]; // 存储账户
       } catch (error) {
-        // User denied account access...
-        console.error("User denied account access")
+        // 用户拒绝账户访问...
+        console.error("User denied account access");
       }
     }
     // Legacy dapp browsers...
@@ -146,7 +141,6 @@ App = {
           }
         });
       });
-      // Use our contract to retrieve and mark the adopted pets
       return App.markPurchased();
     });
 
@@ -154,7 +148,7 @@ App = {
   },
 
   bindEvents: function () {
-    $(document).on('click', '.btn-adopt', App.handlePurchase);
+    $(document).on('click', '.btn-purchase', App.handlePurchase);
     $(document).on('click', '.btn-add', App.handleAdd);
     $(document).on('click', '.btn-sell', App.handleSell);
   },
@@ -162,8 +156,8 @@ App = {
   markPurchased: function () {
     console.log("enter");
     var NFTInstance;
-    petsRow = $('#petsRow')
-    petsRow.html('');
+    NFTsRow = $('#NFTsRow')
+    NFTsRow.html('');
     App.contracts.DigitalCollectibleContract.deployed().then(async function (instance) {
       NFTInstance = instance;
       return NFTInstance.getCount.call();
@@ -171,13 +165,14 @@ App = {
       for (var i = 1; i <= count.c[0]; i++) {
         await NFTInstance.getAllNFTs.call(i).then(function (nft) {
           const [name, description, value, sale, image, NFTCode, timestamp] = [nft[0], nft[1], nft[2], nft[3], nft[4], nft[5], nft[6], nft[7]];
-          var petTemplate = $('#petTemplate');
-          petTemplate.find('.panel-title').text(name);
-          petTemplate.find('img').attr('src', image);
-          petTemplate.find('.pet-description').text(description);
-          petTemplate.find('.pet-value').text(value.c[0]);
-          petTemplate.find('.pet-NFTCode').text(NFTCode);
-          // petTemplate.find('.pet-timestamp').text(timestamp);
+          var NFTTemplate = $('#NFTTemplate');
+          
+          NFTTemplate.find('.panel-title').text(name);
+          NFTTemplate.find('img').attr('src', image);
+          NFTTemplate.find('.NFT-description').text(description);
+          NFTTemplate.find('.NFT-value').text(value.c[0]);
+          NFTTemplate.find('.NFT-NFTCode').text(NFTCode);
+          // NFTTemplate.find('.NFT-timestamp').text(timestamp);
           var date = new Date(timestamp * 1000); // 假设时间戳是以秒为单位
           var formattedDate = date.getFullYear() + '.' + 
                             String(date.getMonth() + 1).padStart(2, '0') + '.' + 
@@ -185,25 +180,26 @@ App = {
                             String(date.getHours()).padStart(2, '0') + ':' + 
                             String(date.getMinutes()).padStart(2, '0') + ':' + 
                             String(date.getSeconds()).padStart(2, '0'); // 添加小时、分钟和秒
-          petTemplate.find('.pet-timestamp').text(formattedDate);
+          NFTTemplate.find('.NFT-timestamp').text(formattedDate);
+          NFTTemplate.find('.NFT-Collector').text(App.account);
           if (NFTCode == 0 || timestamp == 0) {
-            petTemplate.find('.pet-NFTCode').text("None");
-            petTemplate.find('.pet-Collector').text("None");
-            petTemplate.find('.pet-timestamp').text("None");
+            NFTTemplate.find('.NFT-NFTCode').text("None");
+            NFTTemplate.find('.NFT-Collector').text("None");
+            NFTTemplate.find('.NFT-timestamp').text("None");
           }
-          petTemplate.find('.btn-adopt').attr('data-id', i)
+          NFTTemplate.find('.btn-purchase').attr('data-id', i)
           // console.log("data-id name ", i, name);
           if (sale) {
-            petTemplate.find('.btn-adopt').text("Sell").attr("disabled", false);
+            NFTTemplate.find('.btn-purchase').text("出售").attr("disabled", false);
           }
           else if (NFTCode != 0) {
-            petTemplate.find('.btn-adopt').text("Adopted").attr("disabled", true);
+            NFTTemplate.find('.btn-purchase').text("已售出").attr("disabled", true);
           }
           else {
-            petTemplate.find('.btn-adopt').text("Adopt").attr("disabled", false);
+            NFTTemplate.find('.btn-purchase').text("购买").attr("disabled", false);
           }
 
-          petsRow.append(petTemplate.html());
+          NFTsRow.append(NFTTemplate.html());
         });
       }
     }).catch(function (err) {
@@ -239,31 +235,29 @@ App = {
       console.log("Owned Tokens List: ", tokensList);
 
       return tokensList;
-      // var count = await adoptionInstance.getCount.call();
-      // return count;
     }).then(async function (tokensList) {
       // console.log("count ", count);
-      var petsRow = $('#adoptedPetsRow');
-      var petT = $('#petTemplate');
-      petsRow.html('');
+      var NFTsRow = $('#purchasedNFTsRow');
+      var NFTT = $('#NFTTemplate');
+      NFTsRow.html('');
       // for (var i = 0; i < count.c[0]; i++) {
       for (var i = 0; i < tokensList.length; i++) {
         const tokenId = tokensList[i]
         // console.log("tokenId",tokenId.c[0]);
         await NFTInstance.getNFTsByOwner(tokenId.c[0]).then(function (nft) {
-          // console.log("log owned pets");
+          // console.log("log owned NFTs");
           const [name, description, value, sale, image, NFTCode, timestamp] = [nft[0], nft[1], nft[2], nft[3], nft[4], nft[5], nft[6], nft[7]];
           // console.log(name, location, age, sale, owner, image, breed)
           // if (owner === account && sale === false) {
           if (sale === false) {
             // console.log("owner current", owner, currentAccount[0]);
-            var petTemplate = petT.clone();
-            petTemplate.find('.panel-title').text(name);
-            petTemplate.find('img').attr('src', image);
-            petTemplate.find('.pet-description').text(description);
-            petTemplate.find('.pet-value').text(value.c[0]);
-            petTemplate.find('.pet-NFTCode').text(NFTCode);
-            petTemplate.find('.pet-Collector').text(account);
+            var NFTTemplate = NFTT.clone();
+            NFTTemplate.find('.panel-title').text(name);
+            NFTTemplate.find('img').attr('src', image);
+            NFTTemplate.find('.NFT-description').text(description);
+            NFTTemplate.find('.NFT-value').text(value.c[0]);
+            NFTTemplate.find('.NFT-NFTCode').text(NFTCode);
+            NFTTemplate.find('.NFT-Collector').text(account);
             var date = new Date(timestamp * 1000); // 假设时间戳是以秒为单位
             var formattedDate = date.getFullYear() + '.' + 
                             String(date.getMonth() + 1).padStart(2, '0') + '.' + 
@@ -271,12 +265,12 @@ App = {
                             String(date.getHours()).padStart(2, '0') + ':' + 
                             String(date.getMinutes()).padStart(2, '0') + ':' + 
                             String(date.getSeconds()).padStart(2, '0'); // 添加小时、分钟和秒
-            petTemplate.find('.pet-timestamp').text(formattedDate);
-            petTemplate.find('.btn-adopt').hide();
-            petTemplate.find('.btn-sell').attr('data-id', tokenId.c[0]).text("Sell").attr("disabled", false).show();
+            NFTTemplate.find('.NFT-timestamp').text(formattedDate);
+            NFTTemplate.find('.btn-purchase').hide();
+            NFTTemplate.find('.btn-sell').attr('data-id', tokenId.c[0]).text("出售").attr("disabled", false).show();
             console.log("tokenId",tokenId.c[0]);
 
-            petsRow.append(petTemplate.html());
+            NFTsRow.append(NFTTemplate.html());
           }
         });
       }
@@ -286,10 +280,10 @@ App = {
     event.preventDefault();
     var nftId1 = parseInt($(this).data('id'));
     var nftValue1 = parseInt($(this).data('value'));
-    // var petId1 = parseInt($(event.target).data('id'));
-    // var petValue1 = parseInt($(event.target).data('value'));
-    // console.log("petId1 ", petId1)
-    // console.log("petValue1 ", petValue1)
+    // var NFTId1 = parseInt($(event.target).data('id'));
+    // var NFTValue1 = parseInt($(event.target).data('value'));
+    // console.log("NFTId1 ", NFTId1)
+    // console.log("NFTValue1 ", NFTValue1)
     var NFTInstance;
 
     web3.eth.getAccounts(async function (error, accounts) {
@@ -303,13 +297,11 @@ App = {
       App.contracts.DigitalCollectibleContract.deployed().then(function (instance) {
         NFTInstance = instance;
 
-        // Execute adopt as a transaction by sending account
         if (event.target.textContent === "Sell") {
           return NFTInstance.buySellNFT(nftId1, { from: account, value: web3.toWei(nftValue1.toString(), 'ether') });
         }
         else{
           return NFTInstance.NFTPurchase(nftId1, { from: account, value: web3.toWei(nftValue1.toString(), 'ether') });
-          //return NFTInstance.adoptPet(petId1, { from: account, value: web3.toWei(petValue1.toString(), 'ether') });
         }
       }).then(function (result) {
         return App.markPurchased();
