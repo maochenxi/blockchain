@@ -297,7 +297,7 @@ App = {
       App.contracts.DigitalCollectibleContract.deployed().then(function (instance) {
         NFTInstance = instance;
 
-        if (event.target.textContent === "Sell") {
+        if (event.target.textContent === "出售") {
           return NFTInstance.buySellNFT(nftId1, { from: account, value: web3.toWei(nftValue1.toString(), 'ether') });
         }
         else{
@@ -324,6 +324,7 @@ App = {
         return await instance.addNFTs(a[0], parseInt(a[1]), a[2], { from: account });
       }).then(function (result) {
         App.displayOwnedNFTs();
+        console.log("count ", instance.getCount());
       }).catch(function (err) {
         console.log(err.message);
       });

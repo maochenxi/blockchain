@@ -209,7 +209,7 @@ contract DigitalCollectibleContract is ERC721 {
                 value: value,
                 name: name,
                 description: description,
-                picture: "images/boxer.jpeg",
+                picture: "images/7.jpg",
                 timestamp: 0,
                 NFTCode: 0,
                 owner: payable(address(0)),
