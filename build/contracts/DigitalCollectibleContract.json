@@ -34857,12 +34857,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x1B9501aA60EBFb346A461A26279069860cd8DFcf",
-      "transactionHash": "0x1a42779140e947e26b61cc0e76880e6cf2acc41dd3533aac98da4942281dcfff"
+      "address": "0xdE80961d7D2656F0EE7755165C953fc931Da049a",
+      "transactionHash": "0x1ac1534db10d429991c613e589625767cb21170e876a9289198628477bb82385"
     }
   },
   "schemaVersion": "3.4.14",
-  "updatedAt": "2024-12-03T07:46:39.795Z",
+  "updatedAt": "2024-12-03T08:44:55.455Z",
   "networkType": "ethereum",
   "devdoc": {
     "events": {

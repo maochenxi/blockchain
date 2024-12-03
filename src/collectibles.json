@@ -2,7 +2,7 @@
   {
     "id": 1,
     "name": "Gina",
-    "picture": "images/1.jpeg",
+    "picture": "images/1.jpg",
     "value": 3,
     "description": "Scottish Terrier",
     "timestamp": 0,
@@ -11,7 +11,7 @@
   {
     "id": 2,
     "name": "Collins",
-    "picture": "images/2.jpeg",
+    "picture": "images/2.jpg",
     "value": 4,
     "description": "Scottish Terrier",
     "timestamp": 0,
@@ -20,7 +20,7 @@
   {
     "id": 3,
     "name": "Melissa",
-    "picture": "images/3.jpeg",
+    "picture": "images/3.jpg",
     "value": 2,
     "description": "Scottish Terrier",
     "timestamp": 0,
@@ -29,7 +29,7 @@
   {
     "id": 4,
     "name": "Jeanine",
-    "picture": "images/4.jpeg",
+    "picture": "images/4.jpg",
     "value": 3,
     "description": "Scottish Terrier",
     "timestamp": 0,
@@ -38,7 +38,7 @@
   {
     "id": 5,
     "name": "Elvia",
-    "picture": "images/5.jpeg",
+    "picture": "images/5.jpg",
     "value": 5,
     "description": "Scottish Terrier",
     "timestamp": 0,
@@ -47,7 +47,7 @@
   {
     "id": 6,
     "name": "Latisha",
-    "picture": "images/6.jpeg",
+    "picture": "images/6.jpg",
     "value": 5,
     "description": "Scottish Terrier",
     "timestamp": 0,
@@ -56,7 +56,7 @@
   {
     "id": 7,
     "name": "Coleman",
-    "picture": "images/7.jpeg",
+    "picture": "images/7.jpg",
     "value": 3,
     "description": "Scottish Terrier",
     "timestamp": 0,
@@ -65,7 +65,7 @@
   {
     "id": 8,
     "name": "Nichole",
-    "picture": "images/8.jpeg",
+    "picture": "images/8.jpg",
     "value": 3,
     "description": "Scottish Terrier",
     "timestamp": 0,
