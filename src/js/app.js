@@ -7,7 +7,6 @@ App = {
     $.getJSON('../collectibles.json', function (data) {
       var NFTsRow = $('#NFTsRow');
       var NFTTemplate = $('#NFTTemplate');
-
       for (i = 0; i < data.length; i++) {
         NFTTemplate.find('.panel-title').text(data[i].name);
         NFTTemplate.find('img').attr('src', data[i].picture);
@@ -21,11 +20,9 @@ App = {
         NFTTemplate.find('.btn-sell').attr('data-value', data[i].value);
         // console.log("id",data[i].id);
         // console.log("value",data[i].value);
-
         NFTsRow.append(NFTTemplate.html());
       }
     });
-
     return await App.initWeb3();
   },
 
@@ -43,11 +40,9 @@ App = {
         console.error("User denied account access");
       }
     }
-    // Legacy dapp browsers...
     else if (window.web3) {
       App.web3Provider = window.web3.currentProvider;
     }
-    // If no injected web3 instance is detected, fall back to Ganache
     else {
       App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
     }
@@ -56,10 +51,7 @@ App = {
       if (error) {
         console.error(error);
       }
-
       App.account = accounts[0];
-      // App.displayBalance();
-
     });
     return App.initContract();
   },
@@ -73,13 +65,9 @@ App = {
       }
       return result;
     });
-
     $.getJSON('DigitalCollectibleContract.json', function (data) {
-      // Get the necessary contract artifact file and instantiate it with @truffle/contract
       var NFTArtifact = data;
       App.contracts.DigitalCollectibleContract = TruffleContract(NFTArtifact);
-
-      // Set the provider for our contract
       App.contracts.DigitalCollectibleContract.setProvider(App.web3Provider);
       App.contracts.DigitalCollectibleContract.deployed().then(function (instance) {
         var NFTInstance = instance;
@@ -154,7 +142,6 @@ App = {
   },
 
   markPurchased: function () {
-    console.log("enter");
     var NFTInstance;
     NFTsRow = $('#NFTsRow')
     NFTsRow.html('');
@@ -166,20 +153,18 @@ App = {
         await NFTInstance.getAllNFTs.call(i).then(function (nft) {
           const [name, description, value, sale, image, NFTCode, timestamp] = [nft[0], nft[1], nft[2], nft[3], nft[4], nft[5], nft[6], nft[7]];
           var NFTTemplate = $('#NFTTemplate');
-          
           NFTTemplate.find('.panel-title').text(name);
           NFTTemplate.find('img').attr('src', image);
           NFTTemplate.find('.NFT-description').text(description);
           NFTTemplate.find('.NFT-value').text(value.c[0]);
           NFTTemplate.find('.NFT-NFTCode').text(NFTCode);
-          // NFTTemplate.find('.NFT-timestamp').text(timestamp);
-          var date = new Date(timestamp * 1000); // 假设时间戳是以秒为单位
+          var date = new Date(timestamp * 1000);
           var formattedDate = date.getFullYear() + '.' + 
                             String(date.getMonth() + 1).padStart(2, '0') + '.' + 
                             String(date.getDate()).padStart(2, '0') + ' ' + 
                             String(date.getHours()).padStart(2, '0') + ':' + 
                             String(date.getMinutes()).padStart(2, '0') + ':' + 
-                            String(date.getSeconds()).padStart(2, '0'); // 添加小时、分钟和秒
+                            String(date.getSeconds()).padStart(2, '0');
           NFTTemplate.find('.NFT-timestamp').text(formattedDate);
           NFTTemplate.find('.NFT-Collector').text(App.account);
           if (NFTCode == 0 || timestamp == 0) {
@@ -188,7 +173,6 @@ App = {
             NFTTemplate.find('.NFT-timestamp').text("None");
           }
           NFTTemplate.find('.btn-purchase').attr('data-id', i)
-          // console.log("data-id name ", i, name);
           if (sale) {
             NFTTemplate.find('.btn-purchase').text("出售").attr("disabled", false);
           }
@@ -198,7 +182,6 @@ App = {
           else {
             NFTTemplate.find('.btn-purchase').text("购买").attr("disabled", false);
           }
-
           NFTsRow.append(NFTTemplate.html());
         });
       }
@@ -208,16 +191,12 @@ App = {
     App.displayOwnedNFTs();
   },
   displayOwnedNFTs: async function () {
-    // console.log("displayOwnedNFTs");
     var NFTInstance;
-
     var currentAccount = await window.ethereum.request({ method: 'eth_requestAccounts' });
     var account = currentAccount[0];
-    // var balance = await web3.eth.getBalance(account, "ether");
     web3.eth.getBalance(account, function (error, balance) {
       if (!error) {
         var acc = $('#account')
-
         var balanceEth = web3.fromWei(balance, 'ether');
         console.log('账户余额:', balanceEth, 'ETH');
         acc.html('');
@@ -229,28 +208,18 @@ App = {
     });
     App.contracts.DigitalCollectibleContract.deployed().then(async function (instance) {
       NFTInstance = instance;
-
       var tokensList = await NFTInstance.getOwnedTokens(account);
-      
       console.log("Owned Tokens List: ", tokensList);
-
       return tokensList;
     }).then(async function (tokensList) {
-      // console.log("count ", count);
       var NFTsRow = $('#purchasedNFTsRow');
       var NFTT = $('#NFTTemplate');
       NFTsRow.html('');
-      // for (var i = 0; i < count.c[0]; i++) {
       for (var i = 0; i < tokensList.length; i++) {
         const tokenId = tokensList[i]
-        // console.log("tokenId",tokenId.c[0]);
         await NFTInstance.getNFTsByOwner(tokenId.c[0]).then(function (nft) {
-          // console.log("log owned NFTs");
           const [name, description, value, sale, image, NFTCode, timestamp] = [nft[0], nft[1], nft[2], nft[3], nft[4], nft[5], nft[6], nft[7]];
-          // console.log(name, location, age, sale, owner, image, breed)
-          // if (owner === account && sale === false) {
           if (sale === false) {
-            // console.log("owner current", owner, currentAccount[0]);
             var NFTTemplate = NFTT.clone();
             NFTTemplate.find('.panel-title').text(name);
             NFTTemplate.find('img').attr('src', image);
@@ -280,23 +249,15 @@ App = {
     event.preventDefault();
     var nftId1 = parseInt($(this).data('id'));
     var nftValue1 = parseInt($(this).data('value'));
-    // var NFTId1 = parseInt($(event.target).data('id'));
-    // var NFTValue1 = parseInt($(event.target).data('value'));
-    // console.log("NFTId1 ", NFTId1)
-    // console.log("NFTValue1 ", NFTValue1)
     var NFTInstance;
-
     web3.eth.getAccounts(async function (error, accounts) {
       if (error) {
         console.log(error);
       }
-
       var currentAccount = await window.ethereum.request({ method: 'eth_requestAccounts' });
       var account = currentAccount[0];
-
       App.contracts.DigitalCollectibleContract.deployed().then(function (instance) {
         NFTInstance = instance;
-
         if (event.target.textContent === "出售") {
           return NFTInstance.buySellNFT(nftId1, { from: account, value: web3.toWei(nftValue1.toString(), 'ether') });
         }
@@ -329,7 +290,6 @@ App = {
         console.log(err.message);
       });
     }
-    // console.log("adopted")
     window.location.reload();
   },
   handleSell: async function (event) {

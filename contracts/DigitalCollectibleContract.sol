@@ -15,15 +15,9 @@ contract DigitalCollectibleContract is ERC721 {
         address payable owner;
         bool forSale;
     }
-    // Pet[] public nfts;
 
-    // 映射代币 ID 到宠物信息
     mapping(uint256 => DigitalCollectible) public nfts;
-
-    // 映射账户地址到代币ID列表
     mapping(address => uint256[]) public ownerTokens;
-
-    // 记录宠物数量
     uint256 public nftCount=8;
 
     constructor() ERC721("DigitalCollectible", "DCT") {
@@ -126,7 +120,7 @@ contract DigitalCollectibleContract is ERC721 {
     function NFTPurchase(uint nftId) public payable{
         // require(nftId < nfts.length, "NFT does not exist");
         require(!nfts[nftId].forSale, "NFT already for sale");
-        //require(msg.value >= nfts[nftId].value * 1 ether, "Incorrect Ether amount provided.");
+        // require(msg.value >= nfts[nftId].value * 1 ether, "Incorrect Ether amount provided.");
 
         nfts[nftId].owner.transfer(nfts[nftId].value); 
         nfts[nftId].owner = payable(msg.sender);
@@ -136,18 +130,16 @@ contract DigitalCollectibleContract is ERC721 {
         _mint(msg.sender, nftId); // 铸造 NFT
 
         ownerTokens[msg.sender].push(nftId); // 将新铸造的代币 ID 添加到所有者的数组中
-
-        // nfts[nftId].isDaibi = true;
-        
         emit NFTPurchased(nftId, msg.sender);
     }
+
     //购买别人出售的数字藏品
     function buySellNFT(uint nftId) public payable {
         // require(nftId < nfts.length, "NFT does not exist");
-        require(msg.value >= 0.1 ether, "Not enough Ether provided."); // Check if the transaction value is enough.
-        require(nfts[nftId].forSale, "NFT not for sale"); // Ensure the pet is for sale.
+        require(msg.value >= 0.1 ether, "Not enough Ether provided."); 
+        require(nfts[nftId].forSale, "NFT not for sale"); 
 
-        nfts[nftId].owner.transfer(nfts[nftId].value); // Transfer the Ether to the current pet owner.
+        nfts[nftId].owner.transfer(nfts[nftId].value); 
         nfts[nftId].forSale = false;
         nfts[nftId].owner = payable(msg.sender);
         nfts[nftId].NFTCode = nftId;
@@ -173,17 +165,14 @@ contract DigitalCollectibleContract is ERC721 {
 
     //出售数字藏品
     function sellNFTs_new(uint nftId) public {
-        // require(nftId < nfts.length, "Pet does not exist");
+        require(nftId < nfts.length, "NFT does not exist");
         require(nfts[nftId].owner == msg.sender, "Not the owner");
         require(isTokenOwnedBy(msg.sender, nftId), "Token not owned by this address"); // 添加检查
         require(ownerOf(nftId) == msg.sender, "Not the token owner"); // 再次确认代币的主人
         _burn(nftId); // 销毁代币
-        // 更新宠物映射
         nfts[nftId].forSale = true;
         nfts[nftId].NFTCode = 0;
         nfts[nftId].timestamp = 0;
-        //保持原有owner来接受购买数字藏品的以太币
-        //nfts[nftId].owner = payable(address(0));
 
         // 从所有者的代币列表中移除该代币
         uint256[] storage tokens = ownerTokens[msg.sender];
@@ -194,7 +183,6 @@ contract DigitalCollectibleContract is ERC721 {
                 break;
             }
         }
-        
         emit NFTSold(nftId, msg.sender);
     }
 
